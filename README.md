@@ -1,1 +1,1 @@
-Some code about Mersenne Twsister algorithm
+Some code about Mersenne Twsister algorithm.
