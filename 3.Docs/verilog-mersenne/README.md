@@ -42,6 +42,7 @@ read attempt on the AXI bus if a seed operation has not yet taken place.
 ### AXI Stream Interface Example
 
 two byte transfer with sink pause after each byte
+两字节传输，每个字节后有接收器暂停
 
               __    __    __    __    __    __    __    __    __
     clk    __/  \__/  \__/  \__/  \__/  \__/  \__/  \__/  \__/  \__
@@ -59,6 +60,8 @@ Running the included testbenches requires MyHDL and Icarus Verilog.  Make sure
 that myhdl.vpi is installed properly for cosimulation to work correctly.  The
 testbenches can be run with a Python test runner like nose or py.test, or the
 individual test scripts can be run with python directly.
+运行包含的测试台需要MyHDL和Icarus Verilog。确保那是我的HDL。vpi已正确安装，以便协同模拟正常工作。这个测试台可以使用像nose或py这样的Python测试运行程序运行。测试，或者单独的测试脚本可以直接用python运行。
+
 
 ### Testbench Files
 
