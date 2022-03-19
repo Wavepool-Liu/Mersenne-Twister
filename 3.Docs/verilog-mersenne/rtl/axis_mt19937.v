@@ -91,7 +91,9 @@ assign output_axis_tvalid = output_axis_tvalid_reg;
 
 assign busy = busy_reg;
 
-always @* begin
+
+//下个状态判断（组合逻辑）
+always @* begin   
     state_next = 2'bz;
 
     mt_save_next = mt_save_reg;
@@ -144,7 +146,7 @@ always @* begin
                     mt_wr_en = 1;
                     mti_next = 1;
                     state_next = STATE_SEED;
-                end else begin
+                end else begin   //阶段3，对于旋转算法所得的结果进行处理，得到一个32位的随机数。
                     if (mti_reg < 623)
                         mti_next = mti_reg + 1;
                     else
@@ -210,6 +212,8 @@ always @* begin
     endcase
 end
 
+
+//状态跳转（时序逻辑）
 always @(posedge clk) begin
     if (rst) begin
         state_reg <= STATE_IDLE;
