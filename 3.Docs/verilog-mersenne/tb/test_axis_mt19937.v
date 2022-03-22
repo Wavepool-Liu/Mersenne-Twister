@@ -64,8 +64,9 @@ initial begin
     );
 
     // dump file
-    $dumpfile("test_axis_mt19937.lxt");
-    $dumpvars(0, test_axis_mt19937);
+    $dumpfile("test_axis_mt19937.lxt");//指定VCD文件的名字为test_axis_mt19937.lxt，仿真信息将记录到此文件
+    $dumpvars(0, test_axis_mt19937);//指定层次数为0，则test_axis_mt19937模块及其下面各层次的所有信号将被记录
+
 end
 
 axis_mt19937

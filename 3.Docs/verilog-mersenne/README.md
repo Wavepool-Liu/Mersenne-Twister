@@ -24,6 +24,10 @@ carried by the tdata signal while the tvalid and tready signals perform the
 handshaking.  The data on tdata is valid while tvalid is asserted, and it is
 held until tready is asserted.  Data is only transferred when both tvalid and
 tready are asserted.
+AXIstream ½Ó¿ÚÊÇÒ»ÖÖ·Ç³£±ê×¼µÄ²¢ĞĞ×ÜÏß¡£µ±tvalidºÍtreadyĞÅºÅ½øĞĞÎÕÊÖÊ±£¬Êı¾İÊä³öÓÉtdataĞÅºÅĞ¯´ø¡£µ±tvalid±»¶ÏÑÔÊ±£¬tdataÉÏµÄÊı¾İÊÇÓĞĞ§µÄ£¬²¢ÇÒËü±»³ÖÓĞÖ±µ½ready±»¶ÏÑÔ¡£Ö»ÓĞµ±tvalidºÍready¶¼±»¶ÏÑÔÊ±£¬Êı¾İ²Å»á±»´«Êä¡£
+
+
+
 
 Seeding the PRNG can be done simply by placing the seed value on the seed_val
 input and then providing a single cycle pulse on seed_start.  The seed
@@ -33,16 +37,20 @@ assert the busy output while the seed operation is running, and additional
 seed_start pulses will be ignored until the seed operation completes.  A seed
 operation with the default seed of 5489 will start automatically on the first
 read attempt on the AXI bus if a seed operation has not yet taken place.
+²¥ÖÖPRNG¿ÉÒÔ¼òµ¥µØÍ¨¹ıÔÚseed valÊäÈëÖĞ·ÅÖÃseedÖµ£¬È»ºóÔÚseedÆô¶¯Ê±Ìá¹©Ò»¸öµ¥ÖÜÆÚÂö³åÀ´Íê³É¡£ÖÖ×Ó²Ù×÷ĞèÒªÏàµ±³¤µÄÊ±¼ä£¬ÒòÎªÖÖ×ÓÀı³ÌÊ¹ÓÃÁËĞòÁĞ»¯µÄ³Ë·¨À´ÊµÏÖ×îĞ¡µÄ×ÊÔ´ÀûÓÃÂÊ¡£µ±ÖÖ×Ó²Ù×÷ÕıÔÚÔËĞĞÊ±£¬Ä£¿é½«¶ÏÑÔÊä³ö·±Ã¦£¬¶øÆäËûÖÖ×ÓÆô¶¯Âö³å½«±»ºöÂÔ£¬Ö±µ½ÖÖ×Ó²Ù×÷Íê³É¡£Èç¹ûÖÖ×Ó²Ù×÷»¹Ã»ÓĞÆô¶¯£¬ÄÇÃ´Ä¬ÈÏÖÖ×Ó²Ù×÷5489½«ÔÚAXI×ÜÏßÉÏµÚÒ»´Î¶ÁÈ¡³¢ÊÔÊ±×Ô¶¯Æô¶¯
+
+
 
 ### Source Files
 
     rtl/axis_mt19937.v     : 32 bit MT implementation, mt19937ar
     rtl/axis_mt19937_64.v  : 64 bit MT implementation, mt19937-64
 
-### AXI Stream Interface Example
+### AXI Stream Interface Example //½çÃæÀı×Ó
 
 two byte transfer with sink pause after each byte
-ä¸¤å­—èŠ‚ä¼ è¾“ï¼Œæ¯ä¸ªå­—èŠ‚åæœ‰æ¥æ”¶å™¨æš‚åœ
+//Á½¸ö×Ö½Ú´«Êä£¬Ã¿¸ö×Ö½Úºó½ÓÊÕÆ÷ÔİÍ£
+
 
               __    __    __    __    __    __    __    __    __
     clk    __/  \__/  \__/  \__/  \__/  \__/  \__/  \__/  \__/  \__
@@ -60,15 +68,15 @@ Running the included testbenches requires MyHDL and Icarus Verilog.  Make sure
 that myhdl.vpi is installed properly for cosimulation to work correctly.  The
 testbenches can be run with a Python test runner like nose or py.test, or the
 individual test scripts can be run with python directly.
-è¿è¡ŒåŒ…å«çš„æµ‹è¯•å°éœ€è¦MyHDLå’ŒIcarus Verilogã€‚ç¡®ä¿é‚£æ˜¯æˆ‘çš„HDLã€‚vpiå·²æ­£ç¡®å®‰è£…ï¼Œä»¥ä¾¿ååŒæ¨¡æ‹Ÿæ­£å¸¸å·¥ä½œã€‚è¿™ä¸ªæµ‹è¯•å°å¯ä»¥ä½¿ç”¨åƒnoseæˆ–pyè¿™æ ·çš„Pythonæµ‹è¯•è¿è¡Œç¨‹åºè¿è¡Œã€‚æµ‹è¯•ï¼Œæˆ–è€…å•ç‹¬çš„æµ‹è¯•è„šæœ¬å¯ä»¥ç›´æ¥ç”¨pythonè¿è¡Œã€‚
+//ÔËĞĞ°üº¬µÄ²âÊÔÌ¨ĞèÒªMyHDLºÍIcarus Verilog¡£È·±£ÎÒµÄmyhdl.Vpi°²×°ÕıÈ·£¬Ğ­Í¬·ÂÕæ²ÅÄÜÕı³£¹¤×÷¡£²âÊÔ¹¤×÷Ì¨¿ÉÒÔÓÃPython²âÊÔÔËĞĞÆ÷(Èçnose»òpy.test)ÔËĞĞ£¬»òÕßµ¥¶ÀµÄ²âÊÔ½Å±¾¿ÉÒÔÖ±½ÓÓÃpythonÔËĞĞ¡£
 
 
 ### Testbench Files
 
-    tb/axis_ep.py               : MyHDL AXI Stream endpoints
+    tb/axis_ep.py               : MyHDL AXI Stream endpoints 
     tb/mt19937.py               : Reference Python implementation of mt19937ar
     tb/mt19937_64.py            : Reference Python implementation of mt19937-64
     tb/test_axis_mt19937.py     : MyHDL testbench for axis_mt19937 module
-    tb/test_axis_mt19937.v      : Verilog toplevel file for axis_mt19937 cosimulation
+    tb/test_axis_mt19937.v      : Verilog toplevel file for axis_mt19937  cosimulation
     tb/test_axis_mt19937_64.py  : MyHDL testbench for axis_mt19937_64 module
     tb/test_axis_mt19937_64.v   : Verilog toplevel file for axis_mt19937_64 cosimulation
