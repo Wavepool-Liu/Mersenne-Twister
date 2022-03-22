@@ -1,67 +1,67 @@
-#æ¢…æ£®æ—‹è½¬ç®—æ³•
-#å‚è€ƒ:mersenne twister from wikipedia
+#Ã·É­Ğı×ªËã·¨
+#²Î¿¼:mersenne twister from wikipedia
 from time import time
 from data_disps import pydisp
-#MT19937-32çš„å‚æ•°åˆ—è¡¨å¦‚ä¸‹
-W,N,M,R = 32,624,397,31 #é•¿åº¦ï¼Œé€’å½’é•¿åº¦ï¼Œå‘¨æœŸå‚æ•°ï¼Œä½ä½æ©ç 
-A,F = 0X9908B0DF,1812433253#æ—‹è½¬çŸ©é˜µçš„å‚æ•°ï¼Œåˆå§‹åŒ–æ¢…æ£®æ—‹è½¬é“¾æ‰€éœ€å‚æ•°
-U,D,L = 11,0XFFFFFFFF,18#é¢å¤–æ¢…æ£®æ—‹è½¬æ‰€éœ€çš„æ©ç å’Œä½ç§»é‡
-C,B = 4022730752 ,2636928640 #TGFSRçš„æ©ç 
-T,S = 15,7 #TGFSRçš„ä½ç§»é‡
+#MT19937-32µÄ²ÎÊıÁĞ±íÈçÏÂ
+W,N,M,R = 32,624,397,31 #³¤¶È£¬µİ¹é³¤¶È£¬ÖÜÆÚ²ÎÊı£¬µÍÎ»ÑÚÂë
+A,F = 0X9908B0DF,1812433253#Ğı×ª¾ØÕóµÄ²ÎÊı£¬³õÊ¼»¯Ã·É­Ğı×ªÁ´ËùĞè²ÎÊı
+U,D,L = 11,0XFFFFFFFF,18#¶îÍâÃ·É­Ğı×ªËùĞèµÄÑÚÂëºÍÎ»ÒÆÁ¿
+C,B = 4022730752 ,2636928640 #TGFSRµÄÑÚÂë
+T,S = 15,7 #TGFSRµÄÎ»ÒÆÁ¿
 
-#åˆå§‹åŒ–ç´¢å¼•å’Œæ—‹è½¬é“¾
+#³õÊ¼»¯Ë÷ÒıºÍĞı×ªÁ´
 index = 0
 MT = [0]*N 
 
 def inter(t):   
-    #å–æœ€å32ä½->t
+    #È¡×îºó32Î»->t
     return(0xFFFFFFFF & t) 
 
 def twister(): 
-    #ç”¨æ—‹è½¬ç®—æ³•å¤„ç†æ—‹è½¬é“¾
+    #ÓÃĞı×ªËã·¨´¦ÀíĞı×ªÁ´
     global index,N,A
     for i in range(N):
-        y = inter((MT[i] & 0x80000000) +(MT[(i + 1) % N] & 0x7fffffff)) # ï¼ˆMT[i]&0x8000000ï¼‰å–é«˜(W-R)ä½å’Œ(MT[i+1]&0x7fffffff)å–ä½Rä½è¿æ¥;modæ˜¯ä¸ºäº†MT[623]å’ŒMT[0]å†è¿›è¡Œä¸€æ¬¡æ—‹è½¬
-        MT[i] = MT[(i + 397) % N] ^ y >> 1  # yä¸MT[i+m]å¼‚æˆ–,å†å³ç§»ä¸€ä½
-        if y % 2 != 0: #è‹¥æœ€ä½ä½ä¸º1ï¼Œåˆ™ä¸aï¼ˆæ—‹è½¬çŸ©é˜µçš„å‚æ•°ï¼‰å¼‚æˆ–
+        y = inter((MT[i] & 0x80000000) +(MT[(i + 1) % N] & 0x7fffffff)) # £¨MT[i]&0x8000000£©È¡¸ß(W-R)Î»ºÍ(MT[i+1]&0x7fffffff)È¡µÍRÎ»Á¬½Ó;modÊÇÎªÁËMT[623]ºÍMT[0]ÔÙ½øĞĞÒ»´ÎĞı×ª
+        MT[i] = MT[(i + 397) % N] ^ y >> 1  # yÓëMT[i+m]Òì»ò,ÔÙÓÒÒÆÒ»Î»
+        if y % 2 != 0: #Èô×îµÍÎ»Îª1£¬ÔòÓëa£¨Ğı×ª¾ØÕóµÄ²ÎÊı£©Òì»ò
             MT[i] = MT[i] ^ A
     index = 0
 
 def exnum():
-    #å¯¹æ—‹è½¬ç®—æ³•æ‰€å¾—ç»“æœè¿›è¡Œå¤„ç†
+    #¶ÔĞı×ªËã·¨ËùµÃ½á¹û½øĞĞ´¦Àí
     global index,U,D,S,B,T,C,L,N
-    if index >= N or index == 0: #æ¯è¾“å‡ºnä¸ªæ•°å­—è¦æ‰§è¡Œä¸€æ¬¡æ—‹è½¬ç®—æ³•ï¼Œä»¥ä¿è¯éšæœºæ€§
-        twister() #æ—‹è½¬ç®—æ³•
+    if index >= N or index == 0: #Ã¿Êä³ön¸öÊı×ÖÒªÖ´ĞĞÒ»´ÎĞı×ªËã·¨£¬ÒÔ±£Ö¤Ëæ»úĞÔ
+        twister() #Ğı×ªËã·¨
     y = MT[index]
     y = y ^ y >> U & D
     y = y ^ y << S & B
     y = y ^ y << T & C
     y = y ^ y >> L
-    index = index + 1 # å¦‚æœé‡å¤è·å–ï¼Œè¿™ä¸ªindexå°±èƒ½åœ¨MT[0]~MT[623]è·å–623æ¬¡ä¹‹åé‡æ–°å†æ›´æ–°æ—‹è½¬é“¾
+    index = index + 1 # Èç¹ûÖØ¸´»ñÈ¡£¬Õâ¸öindex¾ÍÄÜÔÚMT[0]~MT[623]»ñÈ¡623´ÎÖ®ºóÖØĞÂÔÙ¸üĞÂĞı×ªÁ´
     return inter(y)
 
 def mainset(seed): 
-    #åˆå§‹åŒ–MT[],è·å¾—åŸºç¡€æ¢…æ£®æ—‹è½¬é“¾
+    #³õÊ¼»¯MT[],»ñµÃ»ù´¡Ã·É­Ğı×ªÁ´
     global F,W,N
     MT[0] = seed    #seed
-    for i in range(1,N): #ä¸€å…±623æ¬¡ï¼Œå› ä¸ºMT[0]å·²ç»æ”¾å…¥seed
-        MT[i] = inter(F * (MT[i - 1] ^ MT[i - 1] >> (W-2)) + i) # >>30=(w-2)ï¼›f = 1812433253
+    for i in range(1,N): #Ò»¹²623´Î£¬ÒòÎªMT[0]ÒÑ¾­·ÅÈëseed
+        MT[i] = inter(F * (MT[i - 1] ^ MT[i - 1] >> (W-2)) + i) # >>30=(w-2)£»f = 1812433253
     return exnum()
 
 def main(times,xleft,xright):
     datas = [0]*times
-    for i in range(times):#è¾“å‡ºtimesä¸ªéšæœºæ•°
-        so = mainset(int(time())) / (2**32-1)#åˆ©ç”¨time()è¾“å…¥seedç§å­ï¼Œè¾“å…¥åˆ°mainsetä¸­è·å¾—[0,2^w -1]èŒƒå›´å†…çš„ç¦»æ•£å‹å‡åŒ€åˆ†å¸ƒéšæœºæ•°
+    for i in range(times):#Êä³ötimes¸öËæ»úÊı
+        so = mainset(int(time())) / (2**32-1)#ÀûÓÃtime()ÊäÈëseedÖÖ×Ó£¬ÊäÈëµ½mainsetÖĞ»ñµÃ[0,2^w -1]·¶Î§ÄÚµÄÀëÉ¢ĞÍ¾ùÔÈ·Ö²¼Ëæ»úÊı
         rd = xleft + int((xright-xleft)*so)
         datas[i] = rd
     return datas
 
 if __name__ == '__main__':
-    TIMES = 200000 #è¾“å‡ºä¸ªæ•°
+    TIMES = 200000 #Êä³ö¸öÊı
     while True:
-        br = input("è¯·è¾“å…¥éšæœºæ•°äº§ç”Ÿçš„èŒƒå›´(ç”¨,éš”å¼€):")
+        br = input("ÇëÊäÈëËæ»úÊı²úÉúµÄ·¶Î§(ÓÃ,¸ô¿ª):")
         xleft = eval(br.split(',')[0])
         xright = eval(br.split(',')[1])
         datas = main(TIMES,xleft,xright)
-        d1 = pydisp.PyDisps(datas,xright-xleft,xleft,xright,u'å‡åŒ€åˆ†å¸ƒ')
+        d1 = pydisp.PyDisps(datas,xright-xleft,xleft,xright,u'¾ùÔÈ·Ö²¼')
         d1.frequent_distribution()
