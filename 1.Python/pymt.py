@@ -1,5 +1,7 @@
+# coding=gbk
 #梅森旋转算法
 #参考:mersenne twister from wikipedia
+
 from time import time
 from data_disps import pydisp
 #MT19937-32的参数列表如下
@@ -22,7 +24,8 @@ def twister():
     global index,N,A
     for i in range(N):
         y = inter((MT[i] & 0x80000000) +(MT[(i + 1) % N] & 0x7fffffff)) # （MT[i]&0x8000000）取高(W-R)位和(MT[i+1]&0x7fffffff)取低R位连接;mod是为了MT[623]和MT[0]再进行一次旋转
-        MT[i] = MT[(i + 397) % N] ^ y >> 1  # y与MT[i+m]异或,再右移一位
+        # MT[i] = MT[(i + 397) % N] ^ y >> 1  # y与MT[i+m]异或,再右移一位
+        MT[i] = MT[(i + 87) % N] ^ MT[(i + 148) % N] ^ MT[(i + 241) % N] ^ y >> 1  # y与MT[i+m]异或,再右移一位
         if y % 2 != 0: #若最低位为1，则与a（旋转矩阵的参数）异或
             MT[i] = MT[i] ^ A
     index = 0
@@ -51,17 +54,20 @@ def mainset(seed):
 def main(times,xleft,xright):
     datas = [0]*times
     for i in range(times):#输出times个随机数
-        so = mainset(int(time())) / (2**32-1)#利用time()输入seed种子，输入到mainset中获得[0,2^w -1]范围内的离散型均匀分布随机数
+        so = mainset(int(time()))#利用time()输入seed种子，输入到mainset中获得[0,2^w -1]范围内的离散型均匀分布随机数
+        print(so)
+        so = so / (2**32-1)
         rd = xleft + int((xright-xleft)*so)
         datas[i] = rd
+        # print(datas)
     return datas
 
 if __name__ == '__main__':
-    TIMES = 200000 #输出个数
+    TIMES = 100000 #输出个数
     while True:
         br = input("请输入随机数产生的范围(用,隔开):")
         xleft = eval(br.split(',')[0])
         xright = eval(br.split(',')[1])
         datas = main(TIMES,xleft,xright)
-        d1 = pydisp.PyDisps(datas,xright-xleft,xleft,xright,u'均匀分布')
-        d1.frequent_distribution()
+        d1 = pydisp.PyDisps(xright-xleft,xleft,xright,u'均匀分布')
+        d1.frequent_distribution(datas)

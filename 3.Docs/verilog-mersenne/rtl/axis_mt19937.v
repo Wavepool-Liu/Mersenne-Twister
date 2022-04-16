@@ -32,7 +32,7 @@ THE SOFTWARE.
 module axis_mt19937
 (
     input  wire         clk,
-    input  wire         rst,
+    input  wire         rst_n,
 
     /*
      * AXI output
@@ -224,8 +224,8 @@ end
 
 
 //×´Ì¬Ìø×ª£¨Ê±ÐòÂß¼­£©
-always @(posedge clk) begin
-    if (rst) begin
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
         state_reg <= STATE_IDLE; //³õÊ¼»¯state×´Ì¬
         mti_reg <= 625;         //
         mt_rd_a_ptr_reg <= 0;

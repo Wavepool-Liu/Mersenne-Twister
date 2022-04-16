@@ -1,33 +1,53 @@
+# coding=gbk
 from cProfile import label
 from unicodedata import name
 import matplotlib.pyplot as plt
 import numpy as np
 
 class PyDisps:
-    plt.rcParams['font.sans-serif']=['SimHei'] #æŒ‡å®šåˆ†è¾¨ç‡
-    plt.rcParams['axes.unicode_minus'] = False
-    def __init__(self,datas,bins,xleft,xright,label):
-        self.datas = datas #æ•°æ®é›†[, ,]
-        self.bins = bins #è®¾ç½®è¿ç»­çš„è¾¹ç•Œå€¼ï¼Œå³ç›´æ–¹å›¾çš„åˆ†å¸ƒåŒºé—´[0,10]
-        self.xleft = xleft #xè½´å·¦è¾¹ç•Œ
-        self.xright = xright#xè½´å³è¾¹ç•Œ
-        self.label = label#æ ‡ç­¾
 
-    def frequent_distribution(self):
-        n, bins, patches = plt.hist(self.datas,self.bins,range=(self.xleft,self.xright),color='b', alpha=0.3, label=self.label, histtype='stepfilled')#alphaè®¾ç½®é€æ˜åº¦
-        print("æ¯ä¸ªæŸ±å­å†…çš„ä¸ªæ•°: ",n)
-        print("æ¯ä¸ªæŸ±çš„åŒºé—´èŒƒå›´: ",bins)
-        plt.legend(loc='upper right') #å›¾ä¾‹åœ¨å³ä¸Šè§’
-        plt.grid(True, ls=':') #è®¾ç½®ç½‘æ ¼çº¿
-        plt.xlabel('X')
-        plt.ylabel('y')
+    plt.rcParams['font.sans-serif']=['SimHei'] #Ö¸¶¨·Ö±æÂÊ
+    plt.rcParams['axes.unicode_minus'] = False
+    def __init__(self,bins,xleft,xright):
+        # self.datas = datas #Êı¾İ¼¯[, ,]
+        self.bins = bins #ÉèÖÃÁ¬ĞøµÄ±ß½çÖµ£¬¼´Ö±·½Í¼µÄ·Ö²¼Çø¼ä[0,10]
+        self.xleft = xleft #xÖá×ó±ß½ç
+        self.xright = xright#xÖáÓÒ±ß½ç
+        # self.label = label#±êÇ©
+
+
+    def frequent_distribution(self,datas):
+        n, bins_num, patches = plt.hist(datas,self.bins,range=(self.xleft,self.xright),color='b', alpha=0.5, histtype='bar',edgecolor="r")#alphaÉèÖÃÍ¸Ã÷¶È
+        plt.plot(bins_num[:self.bins],n,marker = 'o',color="r",linestyle="--")
+        print("Ã¿¸öÖù×ÓÄÚµÄ¸öÊı: ",n)
+        print("Ã¿¸öÖùµÄÇø¼ä·¶Î§: ",bins)
+        plt.title("data analyze")
+        plt.legend(loc='upper right') #Í¼ÀıÔÚÓÒÉÏ½Ç
+        plt.grid(True, ls=':') #ÉèÖÃÍø¸ñÏß
+        plt.xlabel('height')
+        plt.ylabel('rate')
         plt.show()
+    
+    def rd_data2list(self,filelocal):
+        pos = []
+        with open(filelocal, 'r') as file_to_read:
+            while True:
+                lines = file_to_read.readline() 
+                lines = lines.strip('\n')
+                if not lines:
+                    break
+                so = int(lines) / (2**32-1)
+                rd = self.xleft + int((self.xright-self.xleft)*so)
+                pos.append(rd)
+        # cnt = pos.len()
+        return pos 
 
 if __name__ == '__main__':
-    br = input("è¯·è¾“å…¥éšæœºæ•°äº§ç”Ÿçš„èŒƒå›´(ç”¨,éš”å¼€):")
+    br = input("ÇëÊäÈëËæ»úÊı²úÉúµÄ·¶Î§(ÓÃ,¸ô¿ª):")
     xleft = eval(br.split(',')[0])
     xright = eval(br.split(',')[1])
     bins = xright - xleft
-    datas=np.random.randint(xleft,xright,100)#ç”Ÿæˆã€0-100ã€‘ä¹‹é—´çš„100ä¸ªæ•°æ®,å³ æ•°æ®é›†
-    d1=PyDisps(datas,bins,xleft,xright,u"å‡åŒ€åˆ†å¸ƒ")
-    d1.frequent_distribution()
+    datas=np.random.randint(xleft,xright,100000)#Éú³É¡¾0-100¡¿Ö®¼äµÄ100¸öÊı¾İ,¼´ Êı¾İ¼¯
+    d1=PyDisps(bins,xleft,xright)
+    # datas = d1.rd_data2list("E:\\ZYNQ-Source\\2.axis_mt19937\\tdata.txt")
+    d1.frequent_distribution(datas)
