@@ -2,6 +2,7 @@
 #梅森旋转算法
 #参考:mersenne twister from wikipedia
 
+from os import fdopen
 from time import time
 from data_disps import pydisp
 #MT19937-32的参数列表如下
@@ -55,19 +56,39 @@ def main(times,xleft,xright):
     datas = [0]*times
     for i in range(times):#输出times个随机数
         so = mainset(int(time()))#利用time()输入seed种子，输入到mainset中获得[0,2^w -1]范围内的离散型均匀分布随机数
-        print(so)
         so = so / (2**32-1)
         rd = xleft + int((xright-xleft)*so)
         datas[i] = rd
-        # print(datas)
     return datas
+def xiangguan(a,b):
+    a_avg = sum(a) / len(a)
+    b_avg = sum(b) / len(b)
+    cov_ab = sum([(x - a_avg) * (y - b_avg) for x, y in zip(a, b)])
+    sq = (sum([(x - a_avg) ** 2 for x in a]) * sum([(x - b_avg) ** 2 for x in b])) ** 0.5
+    corr_factor = cov_ab / sq
+    return corr_factor
+
 
 if __name__ == '__main__':
-    TIMES = 100000 #输出个数
+    TIMES = 10000 #输出个数
+    bins = 20     #分组个数
     while True:
         br = input("请输入随机数产生的范围(用,隔开):")
         xleft = eval(br.split(',')[0])
         xright = eval(br.split(',')[1])
         datas = main(TIMES,xleft,xright)
-        d1 = pydisp.PyDisps(xright-xleft,xleft,xright,u'均匀分布')
+        print(datas)
+        d1 = pydisp.PyDisps(bins,xleft,xright)
         d1.frequent_distribution(datas)
+    #统计相关系数
+    # br = input("请输入随机数产生的范围(用,隔开):")
+    # xleft = eval(br.split(',')[0])
+    # xright = eval(br.split(',')[1])
+    # dataA = main(TIMES,xleft,xright)
+    # print(dataA)
+    # # br = input("请输入随机数产生的范围(用,隔开):")
+    # xleft = eval(br.split(',')[0])
+    # xright = eval(br.split(',')[1])
+    # dataB = main(TIMES,xleft,xright)
+    # print(dataB)
+    # print(xiangguan(dataA, dataB))  

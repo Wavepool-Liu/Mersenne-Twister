@@ -17,15 +17,15 @@ class PyDisps:
 
 
     def frequent_distribution(self,datas):
-        n, bins_num, patches = plt.hist(datas,self.bins,range=(self.xleft,self.xright),color='b', alpha=0.5, histtype='bar',edgecolor="r")#alpha设置透明度
+        n, bins_num, patches = plt.hist(datas,bins=self.bins,range=(self.xleft,self.xright),color='g', alpha=0.5, histtype='bar')#alpha设置透明度
         plt.plot(bins_num[:self.bins],n,marker = 'o',color="r",linestyle="--")
         print("每个柱子内的个数: ",n)
-        print("每个柱的区间范围: ",bins)
-        plt.title("data analyze")
+        # print("每个柱的区间范围: ",bins)
+        plt.title("改进后生成器B-随机数分布情况")
         plt.legend(loc='upper right') #图例在右上角
         plt.grid(True, ls=':') #设置网格线
-        plt.xlabel('height')
-        plt.ylabel('rate')
+        plt.xlabel('分组区间')
+        plt.ylabel('随机数的个数')
         plt.show()
     
     def rd_data2list(self,filelocal):
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     xleft = eval(br.split(',')[0])
     xright = eval(br.split(',')[1])
     bins = xright - xleft
-    datas=np.random.randint(xleft,xright,100000)#生成【0-100】之间的100个数据,即 数据集
+    # datas=np.random.randint(xleft,xright,100000)#生成【0-100】之间的100个数据,即 数据集
     d1=PyDisps(bins,xleft,xright)
-    # datas = d1.rd_data2list("E:\\ZYNQ-Source\\2.axis_mt19937\\tdata.txt")
+    datas = d1.rd_data2list("E:\\ZYNQ-Source\\2.axis_mt19937\\tdata.txt")
     d1.frequent_distribution(datas)
